@@ -14,7 +14,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
  *   -filename hashing (to ensure code updates result in client's cache being updated)
  * */
 module.exports = {
-  entry: './src/index.js',
+  entry: './src/index.jsx',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
