@@ -14,7 +14,7 @@ const handleSubmit = async (e, todoInput, onAddTodo, apiBase) => {
 
     onAddTodo(data)
   } catch (err) {
-    console.log(err)
+    console.log(`couldn't add todo. error: ${err}`)
   }
 }
 
