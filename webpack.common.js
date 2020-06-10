@@ -13,6 +13,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
  *   - code splitting
  *   -filename hashing (to ensure code updates result in client's cache being updated)
  * */
+
 module.exports = {
   entry: './src/index.jsx',
   output: {
