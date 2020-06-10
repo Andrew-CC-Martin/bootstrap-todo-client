@@ -8,6 +8,9 @@ const isDevelopment = NODE_ENV === 'development'
 const reducers = {
   todos: (oldState = [], { type, value }) => {
     switch (type) {
+      case 'INITIALISE_TODOS':
+        return value
+
       case 'ADD_TODO':
         return addTodo(value, oldState)
 

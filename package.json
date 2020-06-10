@@ -6,8 +6,12 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "start": "webpack-dev-server --open --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js",
+    "start:local": "webpack-dev-server --env.API_TARGET=local --config webpack.dev.js",
+    "start:staging": "webpack-dev-server --env.API_TARGET=staging --config webpack.dev.js",
+    "start:prod": "webpack-dev-server --env.API_TARGET=production --config webpack.dev.js",
+    "build:local": "webpack --env.API_TARGET=local --config webpack.dev.js",
+    "build:staging": "webpack --env.API_TARGET=staging --config webpack.dev.js",
+    "build:prod": "webpack --env.API_TARGET=production --config webpack.prod.js",
     "lint": "eslint --ext .js,.jsx src"
   },
   "husky": {
@@ -52,6 +56,8 @@
     "webpack-merge": "4.2.2"
   },
   "dependencies": {
+    "axios": "0.19.2",
+    "babel-polyfill": "6.26.0",
     "lodash": "4.17.15",
     "prop-types": "15.7.2",
     "react": "16.13.1",
