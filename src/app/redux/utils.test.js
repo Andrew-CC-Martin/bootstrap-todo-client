@@ -68,17 +68,21 @@ describe('app > redux > utils > addTodo', () => {
     },
   ]
 
-  const text = 'go to post office'
+  const newEntry = {
+    id: 3,
+    text: 'go to post office',
+  }
 
   it('adds item into todo array, with id one larger than the previous entry', () => {
-    expect(addTodo(text, todosBefore)).toEqual(todosAfter)
+    expect(addTodo(newEntry, todosBefore)).toEqual(todosAfter)
   })
 
   it('if todos are empty, it starts new array', () => {
-    const newAfter = [{
-      id: 0,
-      text,
-    }]
-    expect(addTodo(text, [])).toEqual(newAfter)
+    expect(addTodo(newEntry, [])).toEqual([newEntry])
+  })
+
+  it('doesnt mutate state', () => {
+    const result = addTodo(newEntry, [])
+    expect(result[0]).not.toBe(newEntry)
   })
 })

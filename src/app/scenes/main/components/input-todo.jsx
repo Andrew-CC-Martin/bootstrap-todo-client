@@ -1,24 +1,37 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
   func, string,
 } from 'prop-types'
 import { connect } from 'react-redux'
+import axios from 'axios'
 
-const handleSubmit = (e, todoInput, onAddTodo) => {
+import Context from '../../../context'
+
+const handleSubmit = async (e, todoInput, onAddTodo, apiBase) => {
   e.preventDefault()
-  onAddTodo(todoInput)
+  try {
+    const { data } = await axios.post(`${apiBase}/todos/add`, { todoInput })
+
+    onAddTodo(data)
+  } catch (err) {
+    console.log(err)
+  }
 }
 
-const InputTodo = ({ onAddTodo, todoInput, onUpdateTextInput }) => (
-  <form onSubmit={(e) => handleSubmit(e, todoInput, onAddTodo)}>
-    <input
-      value={todoInput}
-      onChange={({ target: { value } }) => onUpdateTextInput(value)}
-      type='text'
-    />
-    <button type='submit'>create</button>
-  </form>
-)
+const InputTodo = ({ onAddTodo, todoInput, onUpdateTextInput }) => {
+  const { apiBase } = useContext(Context)
+
+  return (
+    <form onSubmit={(e) => handleSubmit(e, todoInput, onAddTodo, apiBase)}>
+      <input
+        value={todoInput}
+        onChange={({ target: { value } }) => onUpdateTextInput(value)}
+        type='text'
+      />
+      <button type='submit'>create</button>
+    </form>
+  )
+}
 InputTodo.propTypes = {
   onAddTodo: func.isRequired,
   todoInput: string.isRequired,
