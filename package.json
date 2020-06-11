@@ -12,7 +12,8 @@
     "build:local": "webpack --env.API_TARGET=local --config webpack.dev.js",
     "build:staging": "webpack --env.API_TARGET=staging --config webpack.dev.js",
     "build:prod": "webpack --env.API_TARGET=production --config webpack.prod.js",
-    "lint": "eslint --ext .js,.jsx src"
+    "lint": "eslint --ext .js,.jsx src",
+    "precommit": "npm run lint && npm run test"
   },
   "husky": {
     "hooks": {

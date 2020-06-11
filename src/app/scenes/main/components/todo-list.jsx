@@ -1,22 +1,27 @@
 import React from 'react'
 import {
-  arrayOf, shape, number, string,
+  arrayOf, shape, number, string, bool,
 } from 'prop-types'
 import { connect } from 'react-redux'
 
 import Todo from './todo'
+import Loader from '../../components/loader'
 
-const TodoList = ({ todos }) => (
+const TodoList = ({ todos, loading }) => (
   <>
     {
-      todos.map((todo) => (
-        <Todo
-          key={todo.id}
-          todo={todo}
-          id={todo.id}
-          text={todo.text}
-        />
-      ))
+      loading
+        ? <Loader />
+        : (
+          todos.map((todo) => (
+            <Todo
+              key={todo.id}
+              todo={todo}
+              id={todo.id}
+              text={todo.text}
+            />
+          ))
+        )
     }
   </>
 )
@@ -25,6 +30,7 @@ TodoList.propTypes = {
     id: number,
     text: string,
   })),
+  loading: bool.isRequired,
 }
 TodoList.defaultProps = {
   todos: [],
