@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useEffect, useContext, useState } from 'react'
 import { connect } from 'react-redux'
 import { func } from 'prop-types'
 import axios from 'axios'
@@ -16,12 +16,15 @@ import Context from './context'
 
 const App = ({ onGetTodos }) => {
   const { apiBase } = useContext(Context)
+  const [loadingTodos, setLoadingTodos] = useState(false)
 
   // on App mount, get todos from API
   useEffect(() => {
     const fetchTodos = async () => {
+      setLoadingTodos(true)
       const { data: { todos } } = await axios.get(`${apiBase}/todos`)
       onGetTodos(todos)
+      setLoadingTodos(false)
     }
 
     fetchTodos()
@@ -32,7 +35,7 @@ const App = ({ onGetTodos }) => {
       <OuterContainer>
         <h1>Todo List</h1>
         <InputTodo />
-        <TodoList />
+        <TodoList loading={loadingTodos} />
       </OuterContainer>
       <GlobalStyle />
     </>
