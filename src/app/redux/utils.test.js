@@ -1,4 +1,4 @@
-import { filterTodos, addTodo } from './utils'
+import { filterTodos, addTodo, updateTodo } from './utils'
 
 describe('app > redux > utils > filterTodos', () => {
   const todosBefore = [
@@ -46,7 +46,6 @@ describe('app > redux > utils > addTodo', () => {
       id: 0,
       text: 'buy milk',
     },
-
     {
       id: 2,
       text: 'do laundry',
@@ -73,7 +72,7 @@ describe('app > redux > utils > addTodo', () => {
     text: 'go to post office',
   }
 
-  it('adds item into todo array, with id one larger than the previous entry', () => {
+  it('adds item into todo array', () => {
     expect(addTodo(newEntry, todosBefore)).toEqual(todosAfter)
   })
 
@@ -84,5 +83,65 @@ describe('app > redux > utils > addTodo', () => {
   it('doesnt mutate state', () => {
     const result = addTodo(newEntry, [])
     expect(result[0]).not.toBe(newEntry)
+  })
+})
+
+describe('app > redux > utils > updateTodo', () => {
+  const todosBefore = [
+    {
+      id: 0,
+      text: 'buy milk',
+    },
+    {
+      id: 2,
+      text: 'go to post office',
+    },
+    {
+      id: 3,
+      text: 'do laundry',
+    },
+  ]
+
+  const todosAfter = [
+    {
+      id: 0,
+      text: 'buy milk',
+    },
+    {
+      id: 2,
+      text: 'go to dry cleaners',
+    },
+    {
+      id: 3,
+      text: 'do laundry',
+    },
+  ]
+
+  const todosAfterWrongOrder = [
+    {
+      id: 0,
+      text: 'buy milk',
+    },
+    {
+      id: 3,
+      text: 'do laundry',
+    },
+    {
+      id: 2,
+      text: 'go to dry cleaners',
+    },
+  ]
+
+  const updatedEntry = {
+    id: 2,
+    text: 'go to dry cleaners',
+  }
+
+  it('updates the entry based on the id', () => {
+    expect(updateTodo(updatedEntry, todosBefore)).toEqual(todosAfter)
+  })
+
+  it('sorts the array based on id', () => {
+    expect(updateTodo(updatedEntry, todosBefore)).not.toEqual(todosAfterWrongOrder)
   })
 })
