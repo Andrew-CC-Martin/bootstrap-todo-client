@@ -16,9 +16,17 @@ To run dev server
 
 - `$ npm run start`
 
+To make a local build (non-minified and points to local backend)
+
+- `$npm run build:local`
+
+To make a staging build (non-minified and points to staging backend)
+
+- `$npm run build:staging`
+
 To make a prod build
 
-- `$npm run build`
+- `$npm run build:prod`
 
 Run tests in watch mode
 

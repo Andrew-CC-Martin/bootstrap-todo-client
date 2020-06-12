@@ -1,6 +1,6 @@
 import { createStore, combineReducers, compose } from 'redux'
 
-import { filterTodos, addTodo } from './utils'
+import { filterTodos, addTodo, updateTodo } from './utils'
 
 const { NODE_ENV } = process.env
 const isDevelopment = NODE_ENV === 'development'
@@ -16,6 +16,9 @@ const reducers = {
 
       case 'DELETE_TODO':
         return filterTodos(value, oldState)
+
+      case 'UPDATE_TODO':
+        return updateTodo(value, oldState)
 
       default:
         return oldState
