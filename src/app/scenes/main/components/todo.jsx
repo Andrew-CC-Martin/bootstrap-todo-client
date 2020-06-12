@@ -7,10 +7,45 @@ import axios from 'axios'
 import styled from 'styled-components'
 
 import CloseButton from '../../components/close-button'
+import { BasicButton, SubmitButton } from '../../components/basic-button'
 import Context from '../../../context'
+import { colorPallette } from '../../../constants'
 
-const Wrapper = styled.div`
+const StyleWrapper = styled.div`
   display: flex;
+  width: 90%;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  border: 1px solid ${colorPallette.darkPurple};
+  border-radius: 5px;
+  padding: 10px;
+
+  form {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  input {
+    width: 70%;
+    @media (min-width: 800px) {
+      width: 50%;
+    }
+  }
+`
+
+const ButtonsWrapper = styled.div`
+  display: flex;
+  min-width: 30%;
+  justify-content: flex-end;
+  button {
+    margin-right: 5px;
+    @media (min-width: 800px) {
+      margin-right: 20px;
+    }
+  }
 `
 
 const Todo = ({
@@ -53,7 +88,7 @@ const Todo = ({
   }
 
   return (
-    <Wrapper>
+    <StyleWrapper>
       {
         isEditing
           ? (
@@ -68,21 +103,21 @@ const Todo = ({
                 type='text'
                 disabled={loading}
               />
-              <button type='submit' disabled={loading}>update</button>
-              <button type='button' onClick={() => setIsEditing(false)}>cancel</button>
+              <ButtonsWrapper>
+                <SubmitButton disabled={loading} text='save' />
+                <BasicButton onClick={() => setIsEditing(false)} text='cancel' />
+              </ButtonsWrapper>
             </form>
           )
           : (
             <>
-              <button type='button' onClick={cancelEditing}>
-                <span role='img'>️✎</span>
-              </button>
+              <BasicButton onClick={cancelEditing} text='✎' />
               <p>{text}</p>
               <CloseButton onClose={handleDeleteTodo} />
             </>
           )
       }
-    </Wrapper>
+    </StyleWrapper>
   )
 }
 Todo.propTypes = {
