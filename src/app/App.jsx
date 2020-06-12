@@ -33,7 +33,9 @@ const App = ({ onGetTodos }) => {
   return (
     <>
       <OuterContainer>
-        <h1>Todo List</h1>
+        <header>
+          <h1>Todo List</h1>
+        </header>
         <InputTodo />
         <TodoList loading={loadingTodos} />
       </OuterContainer>

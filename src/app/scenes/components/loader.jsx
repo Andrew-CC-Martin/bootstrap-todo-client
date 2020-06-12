@@ -29,7 +29,7 @@ const StyleWrapper = styled.div`
   }
 
   .ldio-hb41ro2081b div:nth-child(1) {
-    border-color: #e90c59
+    border-color: #e90c59;
   }
 
   .ldio-hb41ro2081b div:nth-child(2) {
