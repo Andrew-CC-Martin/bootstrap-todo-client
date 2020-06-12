@@ -1,35 +1,52 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import {
   func, string,
 } from 'prop-types'
 import { connect } from 'react-redux'
 import axios from 'axios'
+import styled from 'styled-components'
 
 import Context from '../../../context'
+import { SubmitButton } from '../../components/basic-button'
 
-const handleSubmit = async (e, todoInput, onAddTodo, apiBase) => {
+const StyledForm = styled.form`
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  margin-bottom: 15px;
+  input {
+    width: 70%;
+  }
+`
+
+const handleSubmit = async (e, todoInput, onAddTodo, apiBase, setLoading) => {
   e.preventDefault()
+  setLoading(true)
   try {
     const { data } = await axios.post(`${apiBase}/todos/add`, { todoInput })
 
     onAddTodo(data)
   } catch (err) {
     console.log(`couldn't add todo. error: ${err}`)
+  } finally {
+    setLoading(false)
   }
 }
 
 const InputTodo = ({ onAddTodo, todoInput, onUpdateTextInput }) => {
   const { apiBase } = useContext(Context)
+  const [loading, setLoading] = useState(false)
 
   return (
-    <form onSubmit={(e) => handleSubmit(e, todoInput, onAddTodo, apiBase)}>
+    <StyledForm onSubmit={(e) => handleSubmit(e, todoInput, onAddTodo, apiBase, setLoading)}>
       <input
         value={todoInput}
         onChange={({ target: { value } }) => onUpdateTextInput(value)}
         type='text'
+        disabled={loading}
       />
-      <button type='submit'>create</button>
-    </form>
+      <SubmitButton disabled={loading} text='create' />
+    </StyledForm>
   )
 }
 InputTodo.propTypes = {

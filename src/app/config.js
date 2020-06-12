@@ -1,4 +1,4 @@
-import apiUrls from './constants'
+import { apiUrls } from './constants'
 
 const getApiBase = () => {
   switch (process.env.API_TARGET) {
