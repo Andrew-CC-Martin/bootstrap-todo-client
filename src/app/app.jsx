@@ -1,56 +1,28 @@
-import React, { useEffect, useContext, useState } from 'react'
-import { connect } from 'react-redux'
-import { func } from 'prop-types'
-import axios from 'axios'
+import React from 'react'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 
-// style
 import GlobalStyle from './global-style'
+import Main from './scenes/main/index'
+import Signup from './scenes/signup/signup'
+import Login from './scenes/login/login'
 
-// components
-import OuterContainer from './scenes/main/outer-container'
-import InputTodo from './scenes/main/components/input-todo'
-import TodoList from './scenes/main/components/todo-list'
+const App = () => (
+  <>
+    <BrowserRouter>
+      <Switch>
+        <Route path='/login'>
+          <Login />
+        </Route>
+        <Route path='/signup'>
+          <Signup />
+        </Route>
+        <Route path='/'>
+          <Main />
+        </Route>
+      </Switch>
+    </BrowserRouter>
+    <GlobalStyle />
+  </>
+)
 
-// state
-import Context from './context'
-
-const App = ({ onGetTodos }) => {
-  const { apiBase } = useContext(Context)
-  const [loadingTodos, setLoadingTodos] = useState(false)
-
-  // on App mount, get todos from API
-  useEffect(() => {
-    const fetchTodos = async () => {
-      setLoadingTodos(true)
-      const { data: { todos } } = await axios.get(`${apiBase}/todos`)
-      onGetTodos(todos)
-      setLoadingTodos(false)
-    }
-
-    fetchTodos()
-  }, [])
-
-  return (
-    <>
-      <OuterContainer>
-        <header>
-          <h1>Todo List</h1>
-        </header>
-        <InputTodo />
-        <TodoList loading={loadingTodos} />
-      </OuterContainer>
-      <GlobalStyle />
-    </>
-  )
-}
-App.propTypes = {
-  onGetTodos: func.isRequired,
-}
-
-const mapDispatchToProps = (dispatch) => ({
-  onGetTodos: (value) => {
-    dispatch({ type: 'INITIALISE_TODOS', value })
-  },
-})
-
-export default connect(null, mapDispatchToProps)(App)
+export default App
