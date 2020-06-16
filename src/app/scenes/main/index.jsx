@@ -7,6 +7,7 @@ import Context from '../../context/index'
 import OuterContainer from './outer-container'
 import InputTodo from './components/input-todo'
 import TodoList from './components/todo-list'
+import Header from '../components/header'
 
 const Main = ({ onGetTodos }) => {
   const { apiBase } = useContext(Context)
@@ -26,9 +27,7 @@ const Main = ({ onGetTodos }) => {
   return (
     <>
       <OuterContainer>
-        <header>
-          <h1>Todo List</h1>
-        </header>
+        <Header text='Todo List' />
         <InputTodo />
         <TodoList loading={loadingTodos} />
       </OuterContainer>

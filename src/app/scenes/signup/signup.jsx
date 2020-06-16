@@ -3,6 +3,7 @@ import axios from 'axios'
 
 import Context from '../../context/index'
 import { SubmitButton } from '../components/basic-button'
+import Header from '../components/header'
 
 const Signup = () => {
   const { apiBase } = useContext(Context)
@@ -28,9 +29,7 @@ const Signup = () => {
 
   return (
     <>
-      <header>
-        <h1>Sign Up</h1>
-      </header>
+      <Header text='Sign Up' />
       <form onSubmit={handleSubmit}>
         <label>
           email

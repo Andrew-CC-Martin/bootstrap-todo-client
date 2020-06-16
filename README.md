@@ -38,4 +38,4 @@ Run linter
 
 ## Netlify config
 
-Note - the `_redirects` file is used for Netlify config, so that Netlify deployments will work as a single page app with React-Router
+Note: the `_redirects` file is used for Netlify config, so that Netlify deployments will work as a single page app with React-Router
