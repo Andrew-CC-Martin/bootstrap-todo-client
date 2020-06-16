@@ -16,6 +16,11 @@ const Signup = ({ setLoggedIn }) => {
   const [rawPassword, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [redirect, setRedirect] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+
+  const toggleShowHide = () => {
+    setShowPassword((oldState) => !oldState)
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -37,6 +42,8 @@ const Signup = ({ setLoggedIn }) => {
       <Redirect to='/todos' />
     )
   }
+
+  const passwordInputType = showPassword ? 'text' : 'password'
 
   return (
     <>
@@ -67,9 +74,15 @@ const Signup = ({ setLoggedIn }) => {
           <input
             value={rawPassword}
             onChange={({ target: { value } }) => setPassword(value)}
-            type='text'
+            type={passwordInputType}
             disabled={loading}
           />
+          <input
+            type='checkbox'
+            onClick={toggleShowHide}
+            value={showPassword}
+          />
+          show
         </label>
         <SubmitButton disabled={loading} text='sign up' />
       </form>

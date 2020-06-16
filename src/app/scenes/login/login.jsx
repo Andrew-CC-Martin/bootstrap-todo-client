@@ -14,6 +14,11 @@ const Login = ({ setLoggedIn }) => {
   const [rawPassword, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [redirect, setRedirect] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+
+  const toggleShowHide = () => {
+    setShowPassword((oldState) => !oldState)
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -37,6 +42,8 @@ const Login = ({ setLoggedIn }) => {
     )
   }
 
+  const passwordInputType = showPassword ? 'text' : 'password'
+
   return (
     <>
       <Header text='Log In' />
@@ -54,9 +61,14 @@ const Login = ({ setLoggedIn }) => {
           <input
             value={rawPassword}
             onChange={({ target: { value } }) => setPassword(value)}
-            type='text'
+            type={passwordInputType}
             disabled={loading}
             id='password'
+          />
+          <input
+            type='checkbox'
+            onClick={toggleShowHide}
+            value={showPassword}
           />
         </label>
         <SubmitButton disabled={loading} text='log in' />

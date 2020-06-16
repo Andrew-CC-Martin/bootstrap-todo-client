@@ -2,7 +2,6 @@ import React from 'react'
 import { string, bool, func } from 'prop-types'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
 
 import { BasicButton } from './basic-button'
 
@@ -19,7 +18,7 @@ const StyledHeader = styled.header`
 const Header = ({ text, loggedIn, setLoggedOut }) => {
   const logout = () => {
     // Setting logged out in redux is probably redundant,
-    // but doing it anyway just to be prudent
+    // but doing it anyway just to be careful
     setLoggedOut()
 
     localStorage.clear()
@@ -29,9 +28,6 @@ const Header = ({ text, loggedIn, setLoggedOut }) => {
 
   return (
     <StyledHeader>
-      <Link to='/todos'>
-        <span role='img' aria-label='home'>🏠</span>
-      </Link>
       <h1>{text}</h1>
       {loggedIn ? <BasicButton text='log out' onClick={logout} /> : <span />}
     </StyledHeader>
