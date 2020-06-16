@@ -16,7 +16,14 @@ const Main = ({ onGetTodos }) => {
   useEffect(() => {
     const fetchTodos = async () => {
       setLoadingTodos(true)
-      const { data: { todos } } = await axios.get(`${apiBase}/todos`)
+
+      const jsonWebToken = await localStorage.getItem('jsonWebToken')
+      const authConfig = {
+        headers: {
+          authorization: `${jsonWebToken}`,
+        },
+      }
+      const { data: { todos } } = await axios.get(`${apiBase}/todos`, authConfig)
       onGetTodos(todos)
       setLoadingTodos(false)
     }
