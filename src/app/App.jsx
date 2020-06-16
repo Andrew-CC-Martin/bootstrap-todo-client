@@ -1,56 +1,72 @@
-import React, { useEffect, useContext, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { bool, func } from 'prop-types'
 import { connect } from 'react-redux'
-import { func } from 'prop-types'
-import axios from 'axios'
+import {
+  BrowserRouter, Switch, Route, Redirect,
+} from 'react-router-dom'
 
-// style
 import GlobalStyle from './global-style'
+import Main from './scenes/main/index'
+import Signup from './scenes/signup/signup'
+import Login from './scenes/login/login'
+import Loader from './scenes/components/loader'
 
-// components
-import OuterContainer from './scenes/main/outer-container'
-import InputTodo from './scenes/main/components/input-todo'
-import TodoList from './scenes/main/components/todo-list'
+const App = ({ loggedIn, setLoggedIn }) => {
+  // Don't allow app to render until the jwt has been checked
+  const [canRender, setCanRender] = useState(false)
 
-// state
-import Context from './context'
-
-const App = ({ onGetTodos }) => {
-  const { apiBase } = useContext(Context)
-  const [loadingTodos, setLoadingTodos] = useState(false)
-
-  // on App mount, get todos from API
+  // On component mount, check for presence of jwt
+  // If it's there, set loggedIn to true in redux
   useEffect(() => {
-    const fetchTodos = async () => {
-      setLoadingTodos(true)
-      const { data: { todos } } = await axios.get(`${apiBase}/todos`)
-      onGetTodos(todos)
-      setLoadingTodos(false)
+    const checkJwt = async () => {
+      const jsonWebToken = await localStorage.getItem('jsonWebToken')
+      if (jsonWebToken) {
+        setLoggedIn(true)
+      }
+
+      setCanRender(true)
     }
 
-    fetchTodos()
+    checkJwt()
   }, [])
+
+  if (!canRender) {
+    return <Loader />
+  }
 
   return (
     <>
-      <OuterContainer>
-        <header>
-          <h1>Todo List</h1>
-        </header>
-        <InputTodo />
-        <TodoList loading={loadingTodos} />
-      </OuterContainer>
+      <BrowserRouter>
+        <Switch>
+          <Route path='/login'>
+            {loggedIn ? <Redirect to='/todos' /> : <Login />}
+          </Route>
+          <Route path='/signup'>
+            {loggedIn ? <Redirect to='/todos' /> : <Signup />}
+          </Route>
+          <Route path='/todos'>
+            {loggedIn ? <Main /> : <Redirect to='/login' />}
+          </Route>
+          <Route path='/'>
+            <Redirect to='/todos' />
+          </Route>
+        </Switch>
+      </BrowserRouter>
       <GlobalStyle />
     </>
   )
 }
 App.propTypes = {
-  onGetTodos: func.isRequired,
+  setLoggedIn: func.isRequired,
+  loggedIn: bool.isRequired,
 }
 
+const mapStateToProps = ({ loggedIn }) => ({ loggedIn })
+
 const mapDispatchToProps = (dispatch) => ({
-  onGetTodos: (value) => {
-    dispatch({ type: 'INITIALISE_TODOS', value })
+  setLoggedIn: () => {
+    dispatch({ type: 'SET_LOGGED_IN' })
   },
 })
 
-export default connect(null, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App)

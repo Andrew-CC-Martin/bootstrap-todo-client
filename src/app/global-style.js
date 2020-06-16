@@ -19,7 +19,7 @@ const GlobalStyle = createGlobalStyle`
 
   h1 {
     color: #ffffff;
-    margin: 5px;
+    margin: 0;
   }
 
   p {
