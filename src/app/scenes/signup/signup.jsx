@@ -1,30 +1,41 @@
 import React, { useState, useContext } from 'react'
+import { func } from 'prop-types'
+import { Redirect } from 'react-router-dom'
 import axios from 'axios'
+import { connect } from 'react-redux'
 
 import Context from '../../context/index'
 import { SubmitButton } from '../components/basic-button'
 import Header from '../components/header'
 
-const Signup = () => {
+const Signup = ({ setLoggedIn }) => {
   const { apiBase } = useContext(Context)
   // todo - add frontend validation for email and password
   const [email, setEmail] = useState('')
   const [fullName, setFullName] = useState('')
   const [rawPassword, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
+  const [redirect, setRedirect] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
 
     try {
-      const response = await axios.put(`${apiBase}/users/add`, { fullName, email, rawPassword })
-      console.log('handleSubmit -> response', response)
+      const { data: { jsonWebToken } } = await axios.put(`${apiBase}/users/add`, { fullName, email, rawPassword })
+      localStorage.setItem('jsonWebToken', jsonWebToken)
+      setRedirect(true)
+      setLoggedIn()
     } catch (err) {
-      console.log(`couldn't create user. error: ${err}`)
-    } finally {
       setLoading(false)
+      console.log(`couldn't create user. ${err}`)
     }
+  }
+
+  if (redirect) {
+    return (
+      <Redirect to='/todos' />
+    )
   }
 
   return (
@@ -65,5 +76,14 @@ const Signup = () => {
     </>
   )
 }
+Signup.propTypes = {
+  setLoggedIn: func.isRequired,
+}
 
-export default Signup
+const mapDispatchToProps = (dispatch) => ({
+  setLoggedIn: () => {
+    dispatch({ type: 'SET_LOGGED_IN' })
+  },
+})
+
+export default connect(null, mapDispatchToProps)(Signup)

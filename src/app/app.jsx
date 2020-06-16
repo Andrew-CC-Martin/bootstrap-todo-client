@@ -42,7 +42,7 @@ const App = ({ loggedIn, setLoggedIn }) => {
             {loggedIn ? <Redirect to='/todos' /> : <Login />}
           </Route>
           <Route path='/signup'>
-            {loggedIn ? <Signup /> : <Redirect to='/login' />}
+            {loggedIn ? <Redirect to='/todos' /> : <Signup />}
           </Route>
           <Route path='/todos'>
             {loggedIn ? <Main /> : <Redirect to='/login' />}
