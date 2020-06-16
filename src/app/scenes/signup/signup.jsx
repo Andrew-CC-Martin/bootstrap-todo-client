@@ -28,7 +28,9 @@ const Signup = () => {
 
   return (
     <>
-      <h1>Sign Up</h1>
+      <header>
+        <h1>Sign Up</h1>
+      </header>
       <form onSubmit={handleSubmit}>
         <label>
           email
