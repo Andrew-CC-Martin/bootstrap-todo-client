@@ -22,8 +22,16 @@ const StyledForm = styled.form`
 const handleSubmit = async (e, todoInput, onAddTodo, apiBase, setLoading) => {
   e.preventDefault()
   setLoading(true)
+
   try {
-    const { data } = await axios.post(`${apiBase}/todos/add`, { todoInput })
+    const jsonWebToken = await localStorage.getItem('jsonWebToken')
+    const authConfig = {
+      headers: {
+        authorization: `${jsonWebToken}`,
+      },
+    }
+
+    const { data } = await axios.post(`${apiBase}/todos/add`, { todoInput }, authConfig)
 
     onAddTodo(data)
   } catch (err) {
