@@ -104,12 +104,11 @@ const Todo = ({
       }
 
       await axios.delete(`${apiBase}/todos/delete/${id}`, authConfig)
+      setLoading(false)
 
       onDeleteTodo(id)
     } catch (err) {
       console.log(`couldn't delete todo. error: ${err}`)
-    } finally {
-      setLoading(true)
     }
   }
 
