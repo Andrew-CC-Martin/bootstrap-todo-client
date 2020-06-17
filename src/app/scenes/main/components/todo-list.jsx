@@ -17,8 +17,6 @@ const TodoList = ({ todos, loading }) => (
             <Todo
               key={todo.id}
               todo={todo}
-              id={todo.id}
-              text={todo.text}
             />
           ))
         )
