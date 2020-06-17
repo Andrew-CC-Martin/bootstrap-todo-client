@@ -45,5 +45,6 @@ module.exports = {
       "controlComponents": ["CustomInput"],
       "depth": 3,
     }],
+    "no-confusing-arrow": "off",
   },
 }

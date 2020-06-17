@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import {
-  string, func, number,
+  string, func, number, bool, shape,
 } from 'prop-types'
 import { connect } from 'react-redux'
 import axios from 'axios'
@@ -29,10 +29,17 @@ const StyleWrapper = styled.div`
   }
 
   input {
-    width: 70%;
-    @media (min-width: 800px) {
-      width: 50%;
-    }
+    margin-right: 10px;
+    width: 60%;
+  }
+
+  p {
+    color: ${(props) => props.isDone ? colorPallette.middleBluePurple : 'black'};
+    text-decoration: ${(props) => props.isDone ? 'line-through' : 'none'};
+  }
+
+  label {
+    width: 100%;
   }
 `
 
@@ -49,12 +56,17 @@ const ButtonsWrapper = styled.div`
 `
 
 const Todo = ({
-  text, id, onDeleteTodo, onUpdateTodo,
+  todo: { text, id, isDone }, onDeleteTodo, onUpdateTodo,
 }) => {
   const { apiBase } = useContext(Context)
   const [isEditing, setIsEditing] = useState(false)
   const [loading, setLoading] = useState(false)
   const [todoInput, setTodoInput] = useState(text)
+  const [isDoneCheckBox, setIsDoneCheckBox] = useState(isDone)
+
+  const toggleIsDone = () => {
+    setIsDoneCheckBox((oldState) => !oldState)
+  }
 
   const handleUpdateTodo = async (e) => {
     e.preventDefault()
@@ -67,10 +79,12 @@ const Todo = ({
         },
       }
 
-      await axios.put(`${apiBase}/todos/update/${id}`, { todoInput }, authConfig)
+      await axios.put(
+        `${apiBase}/todos/update/${id}`, { todoInput, isDone: isDoneCheckBox }, authConfig,
+      )
 
       // Update todos list in redux
-      onUpdateTodo({ id, text: todoInput })
+      onUpdateTodo({ id, text: todoInput, isDone: isDoneCheckBox })
     } catch (err) {
       console.log(`couldn't update todo. error: ${err}`)
     } finally {
@@ -105,7 +119,7 @@ const Todo = ({
   }
 
   return (
-    <StyleWrapper>
+    <StyleWrapper isDone={isDone}>
       {
         isEditing
           ? (
@@ -120,6 +134,20 @@ const Todo = ({
                 type='text'
                 disabled={loading}
               />
+
+              <div>
+                <label htmlFor='isDoneCheckBox'>
+                  mark as done?
+                </label>
+                <input
+                  type='checkbox'
+                  name='isDoneCheckBox'
+                  onChange={toggleIsDone}
+                  checked={isDoneCheckBox}
+                  disabled={loading}
+                />
+              </div>
+
               <ButtonsWrapper>
                 <SubmitButton disabled={loading} text='save' />
                 <BasicButton onClick={() => setIsEditing(false)} text='cancel' />
@@ -138,10 +166,13 @@ const Todo = ({
   )
 }
 Todo.propTypes = {
-  text: string.isRequired,
+  todo: shape({
+    text: string.isRequired,
+    id: number.isRequired,
+    isDone: bool.isRequired,
+  }).isRequired,
   onDeleteTodo: func.isRequired,
   onUpdateTodo: func.isRequired,
-  id: number.isRequired,
 }
 
 const mapDispatchToProps = (dispatch) => ({
