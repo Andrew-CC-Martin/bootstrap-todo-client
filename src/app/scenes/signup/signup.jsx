@@ -120,8 +120,8 @@ const Signup = ({ setLoggedIn }) => {
           <div className='signup__checkbox'>
             <input
               type='checkbox'
-              onClick={toggleShowHide}
-              value={showPassword}
+              onChange={toggleShowHide}
+              checked={showPassword}
               name='checkbox'
             />
             <label htmlFor='checkbox'>

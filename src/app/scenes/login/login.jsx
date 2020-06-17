@@ -109,8 +109,8 @@ const Login = ({ setLoggedIn }) => {
           <div className='login__checkbox'>
             <input
               type='checkbox'
-              onClick={toggleShowHide}
-              value={showPassword}
+              onChange={toggleShowHide}
+              checked={showPassword}
               name='password-checkbox'
             />
             <label htmlFor='password-checkbox'>
