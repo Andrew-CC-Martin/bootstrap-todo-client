@@ -1,12 +1,47 @@
 import React, { useState, useContext } from 'react'
 import { func } from 'prop-types'
 import { connect } from 'react-redux'
-import { Link, Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import axios from 'axios'
+import styled from 'styled-components'
 
 import Context from '../../context/index'
 import { SubmitButton } from '../components/basic-button'
 import Header from '../components/header'
+
+const StyleWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 70vh;
+  justify-content: center;
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  label {
+    justify-content: space-between;
+  }
+  input {
+    margin-bottom: 10px;
+  }
+  .login__checkbox {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+  }
+  .login__email {
+    margin-bottom: 10px;
+  }
+  .login__submit-button {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+  p {
+    margin-bottom: 30px;
+  }
+`
 
 const Login = ({ setLoggedIn }) => {
   const { apiBase } = useContext(Context)
@@ -14,6 +49,11 @@ const Login = ({ setLoggedIn }) => {
   const [rawPassword, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [redirect, setRedirect] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+
+  const toggleShowHide = () => {
+    setShowPassword((oldState) => !oldState)
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -37,33 +77,54 @@ const Login = ({ setLoggedIn }) => {
     )
   }
 
+  const passwordInputType = showPassword ? 'text' : 'password'
+
   return (
     <>
       <Header text='Log In' />
-      <form onSubmit={handleSubmit}>
-        <label htmlFor='email'>
+      <StyleWrapper>
+        <form onSubmit={handleSubmit}>
           <input
             value={email}
             onChange={({ target: { value } }) => setEmail(value)}
+            name='email'
             type='text'
             disabled={loading}
-            id='email'
           />
-        </label>
-        <label htmlFor='password'>
+          <label htmlFor='password' className='login__email'>
+            email
+          </label>
+
           <input
             value={rawPassword}
             onChange={({ target: { value } }) => setPassword(value)}
-            type='text'
+            type={passwordInputType}
             disabled={loading}
-            id='password'
+            name='password'
           />
-        </label>
-        <SubmitButton disabled={loading} text='log in' />
-      </form>
-      <Link to='/signup'>
-        <p>I&apos;m new</p>
-      </Link>
+          <label htmlFor='password'>
+            password
+          </label>
+
+          <div className='login__checkbox'>
+            <input
+              type='checkbox'
+              onClick={toggleShowHide}
+              value={showPassword}
+              name='password-checkbox'
+            />
+            <label htmlFor='password-checkbox'>
+              show
+            </label>
+          </div>
+
+          <div className='login__submit-button'>
+            <SubmitButton disabled={loading} text='log in' />
+          </div>
+        </form>
+        <p>or</p>
+        <a href='/signup'>Sign Up</a>
+      </StyleWrapper>
     </>
   )
 }

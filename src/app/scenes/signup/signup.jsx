@@ -3,10 +3,44 @@ import { func } from 'prop-types'
 import { Redirect } from 'react-router-dom'
 import axios from 'axios'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
 
 import Context from '../../context/index'
 import { SubmitButton } from '../components/basic-button'
 import Header from '../components/header'
+
+const StyleWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 70vh;
+  justify-content: center;
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  label {
+    justify-content: space-between;
+  }
+  input {
+    margin-bottom: 10px;
+  }
+  .signup__checkbox {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+  }
+  .signup__email {
+    margin-bottom: 10px;
+  }
+  .signup__fullName {
+    margin-bottom: 10px;
+  }
+  .signup__submit-button {
+    display: flex;
+    justify-content: center;
+  }
+`
 
 const Signup = ({ setLoggedIn }) => {
   const { apiBase } = useContext(Context)
@@ -16,6 +50,11 @@ const Signup = ({ setLoggedIn }) => {
   const [rawPassword, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [redirect, setRedirect] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+
+  const toggleShowHide = () => {
+    setShowPassword((oldState) => !oldState)
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -38,41 +77,63 @@ const Signup = ({ setLoggedIn }) => {
     )
   }
 
+  const passwordInputType = showPassword ? 'text' : 'password'
+
   return (
     <>
       <Header text='Sign Up' />
-      <form onSubmit={handleSubmit}>
-        <label>
-          email
+      <StyleWrapper>
+        <form onSubmit={handleSubmit}>
           <input
             value={email}
             onChange={({ target: { value } }) => setEmail(value)}
             type='text'
             disabled={loading}
+            name='email'
           />
-        </label>
+          <label htmlFor='email' className='signup__email'>
+            email
+          </label>
 
-        <label>
-          name
           <input
             value={fullName}
             onChange={({ target: { value } }) => setFullName(value)}
             type='text'
             disabled={loading}
+            name='fullName'
           />
-        </label>
+          <label htmlFor='fullName' className='signup__fullName'>
+            name
+          </label>
 
-        <label>
-          password
           <input
             value={rawPassword}
             onChange={({ target: { value } }) => setPassword(value)}
-            type='text'
+            type={passwordInputType}
             disabled={loading}
+            name='password'
           />
-        </label>
-        <SubmitButton disabled={loading} text='sign up' />
-      </form>
+          <label htmlFor='password'>
+            password
+          </label>
+
+          <div className='signup__checkbox'>
+            <input
+              type='checkbox'
+              onClick={toggleShowHide}
+              value={showPassword}
+              name='checkbox'
+            />
+            <label htmlFor='checkbox'>
+              show
+            </label>
+          </div>
+
+          <div className='signup__submit-button'>
+            <SubmitButton disabled={loading} text='sign up' />
+          </div>
+        </form>
+      </StyleWrapper>
     </>
   )
 }
