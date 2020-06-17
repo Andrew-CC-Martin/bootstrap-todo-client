@@ -81,7 +81,7 @@ const Signup = ({ setLoggedIn }) => {
 
   return (
     <>
-      <Header text='Sign Up' />
+      <Header />
       <StyleWrapper>
         <form onSubmit={handleSubmit}>
           <input

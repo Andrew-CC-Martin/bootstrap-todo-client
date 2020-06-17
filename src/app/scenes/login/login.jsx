@@ -81,7 +81,7 @@ const Login = ({ setLoggedIn }) => {
 
   return (
     <>
-      <Header text='Log In' />
+      <Header />
       <StyleWrapper>
         <form onSubmit={handleSubmit}>
           <input

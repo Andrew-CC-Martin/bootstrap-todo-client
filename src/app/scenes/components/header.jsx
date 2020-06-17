@@ -1,5 +1,5 @@
 import React from 'react'
-import { string, bool, func } from 'prop-types'
+import { bool, func } from 'prop-types'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
@@ -15,7 +15,7 @@ const StyledHeader = styled.header`
   }
 `
 
-const Header = ({ text, loggedIn, setLoggedOut }) => {
+const Header = ({ loggedIn, setLoggedOut }) => {
   const logout = () => {
     // Setting logged out in redux is probably redundant,
     // but doing it anyway just to be careful
@@ -28,13 +28,12 @@ const Header = ({ text, loggedIn, setLoggedOut }) => {
 
   return (
     <StyledHeader>
-      <h1>{text}</h1>
+      <h1>Todo List</h1>
       {loggedIn ? <BasicButton text='log out' onClick={logout} /> : <span />}
     </StyledHeader>
   )
 }
 Header.propTypes = {
-  text: string.isRequired,
   loggedIn: bool.isRequired,
   setLoggedOut: func.isRequired,
 }
