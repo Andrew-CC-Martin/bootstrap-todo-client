@@ -15,6 +15,10 @@ module.exports = (env) => {
       plugins: [
         new webpack.DefinePlugin({ 'process.env.API_TARGET': JSON.stringify(API_TARGET) }),
       ],
+      devServer: {
+        port: 3000,
+        historyApiFallback: true,
+      },
     },
   )
 }

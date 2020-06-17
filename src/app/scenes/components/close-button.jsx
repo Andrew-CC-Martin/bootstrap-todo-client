@@ -1,5 +1,5 @@
 import React from 'react'
-import { func } from 'prop-types'
+import { func, bool } from 'prop-types'
 import styled from 'styled-components'
 
 const StyleWrapper = styled.div`
@@ -11,9 +11,9 @@ const StyleWrapper = styled.div`
   }
 `
 
-const CloseButton = ({ onClose }) => (
+const CloseButton = ({ onClose, disabled }) => (
   <StyleWrapper>
-    <button type='button' onClick={onClose}>
+    <button disabled={disabled} type='button' onClick={onClose}>
       x
     </button>
   </StyleWrapper>
@@ -21,6 +21,10 @@ const CloseButton = ({ onClose }) => (
 )
 CloseButton.propTypes = {
   onClose: func.isRequired,
+  disabled: bool,
+}
+CloseButton.defaultProps = {
+  disabled: false,
 }
 
 export default CloseButton

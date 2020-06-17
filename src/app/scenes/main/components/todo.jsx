@@ -60,7 +60,14 @@ const Todo = ({
     e.preventDefault()
     setLoading(true)
     try {
-      await axios.put(`${apiBase}/todos/update/${id}`, { todoInput })
+      const jsonWebToken = await localStorage.getItem('jsonWebToken')
+      const authConfig = {
+        headers: {
+          authorization: `${jsonWebToken}`,
+        },
+      }
+
+      await axios.put(`${apiBase}/todos/update/${id}`, { todoInput }, authConfig)
 
       // Update todos list in redux
       onUpdateTodo({ id, text: todoInput })
@@ -73,12 +80,22 @@ const Todo = ({
   }
 
   const handleDeleteTodo = async () => {
+    setLoading(true)
     try {
-      await axios.delete(`${apiBase}/todos/delete/${id}`)
+      const jsonWebToken = await localStorage.getItem('jsonWebToken')
+      const authConfig = {
+        headers: {
+          authorization: `${jsonWebToken}`,
+        },
+      }
+
+      await axios.delete(`${apiBase}/todos/delete/${id}`, authConfig)
 
       onDeleteTodo(id)
     } catch (err) {
       console.log(`couldn't delete todo. error: ${err}`)
+    } finally {
+      setLoading(true)
     }
   }
 
@@ -111,9 +128,9 @@ const Todo = ({
           )
           : (
             <>
-              <BasicButton onClick={cancelEditing} text='✎' />
+              <BasicButton onClick={cancelEditing} text='✎' disabled={loading} />
               <p>{text}</p>
-              <CloseButton onClose={handleDeleteTodo} />
+              <CloseButton onClose={handleDeleteTodo} disabled={loading} />
             </>
           )
       }

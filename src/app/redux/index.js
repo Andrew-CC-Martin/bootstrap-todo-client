@@ -33,6 +33,18 @@ const reducers = {
         return oldState
     }
   },
+  loggedIn: (oldState = false, { type }) => {
+    switch (type) {
+      case 'SET_LOGGED_IN':
+        return true
+
+      case 'SET_LOGGED_OUT':
+        return false
+
+      default:
+        return oldState
+    }
+  },
 }
 
 const slices = combineReducers({ ...reducers })
