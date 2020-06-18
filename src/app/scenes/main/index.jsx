@@ -34,7 +34,7 @@ const Main = ({ onGetTodos }) => {
   return (
     <>
       <OuterContainer>
-        <Header text='Todo List' />
+        <Header />
         <InputTodo />
         <TodoList loading={loadingTodos} />
       </OuterContainer>
